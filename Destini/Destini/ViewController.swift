@@ -94,7 +94,13 @@ class ViewController: UIViewController {
         // TODO Step 6: Modify the IF-Statement to complete the story
         
     }
-    
+
+    /// <#Description#>
+    ///
+    /// - Parameters:
+    ///   - story: <#story description#>
+    ///   - answerA: <#answerA description#>
+    ///   - answerB: <#answerB description#>
     func storyAndAnswers(story : String, answerA : String, answerB : String){
         storyTextView.text = story
         topButton.isHidden = false
