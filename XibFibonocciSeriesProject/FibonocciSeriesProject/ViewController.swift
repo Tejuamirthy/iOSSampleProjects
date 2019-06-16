@@ -39,6 +39,10 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         self.dataSections.append(Section(name: "Heading", listOfDoubles: getFibanocciList()))
         
         totalSections = 4
+        
+        let headerNib = UINib.init(nibName: "HeaderView", bundle: Bundle.main)
+        tableView.register(headerNib,forHeaderFooterViewReuseIdentifier: "HeaderView")
+        //tableView.register(HeaderUIView.self, forHeaderFooterViewReuseIdentifier: "HeaderView")
         // Do any additional setup after loading the view, typically from a nib.
     }
 
@@ -69,12 +73,12 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         
     }
 
-    
-    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        let dataSection = dataSections[section]
-        return dataSection.name+" \(section+1)"
-    }
-    
+//
+//    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+//        let dataSection = dataSections[section]
+//        return dataSection.name+" \(section+1)"
+//    }
+//
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cellReuseIdentifier") as? TableViewCell
         let text = dataSections[indexPath.section].listOfDoubles[indexPath.row]
@@ -84,13 +88,42 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
             returningCell = singleCell
         }
         return returningCell
-
     }
-//    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-//        //inside collectionView they are different
-//        tableView.dequeueReusableHeaderFooterView(withIdentifier: "headerReuseIdentifier")
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        //inside collectionView they are different
+        
+        //guard let headerView = tableView.dequeueReusableHeaderFooterView(withIdentifier: "HeaderView"),let headerView2 = headerView as? HeaderUIView else { return UIView() }
+        //with file owner of uiview
+//        UINib.init(nibName: "HeaderView", bundle: Bundle.main)
+//        let customView = HeaderUIView()
+//        customView.label.text = "Section -"
+//
+//        return customView
+//
+//        guard let headerView = tableView.dequeueReusableHeaderFooterView(withIdentifier: "HeaderView") as? HeaderUIView else
+//        {
+//            print("header view failed")
+//            return UIView()
+//
+//        }
+//        print("headerview success")
+//
+//        headerView.label.text = "Section - \(section+1)"
+//        return headerView
 //    }
+        
 
+        let cell = tableView.dequeueReusableHeaderFooterView(withIdentifier: "HeaderView") as? HeaderUIView
+        cell?.label.text = "Section - \(section+1)"
+        var returningCell = HeaderUIView()
+        if let singleCell = cell {
+            returningCell = singleCell
+        }
+        return returningCell
+//        guard let header = Bundle.main.loadNibNamed("HeaderView", owner: self, options: nil)?[0] as? HeaderUIView else{ return UIView() }
+//        header.label.text = "Section - \(section+1)"
+//        return header
+    }
     func addSections() {
         dataSections.append(Section(name: "Heading", listOfDoubles: getFibanocciList()))
         totalSections = totalSections + 1

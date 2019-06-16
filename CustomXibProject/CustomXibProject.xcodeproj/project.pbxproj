@@ -12,6 +12,8 @@
 		600274CF22B3CB4800BB56D3 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 600274CD22B3CB4800BB56D3 /* Main.storyboard */; };
 		600274D122B3CB4800BB56D3 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 600274D022B3CB4800BB56D3 /* Assets.xcassets */; };
 		600274D422B3CB4800BB56D3 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 600274D222B3CB4800BB56D3 /* LaunchScreen.storyboard */; };
+		600274DC22B3CB8C00BB56D3 /* CustomView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 600274DB22B3CB8C00BB56D3 /* CustomView.xib */; };
+		600274DE22B3CBA000BB56D3 /* CustomUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 600274DD22B3CBA000BB56D3 /* CustomUIView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -22,6 +24,8 @@
 		600274D022B3CB4800BB56D3 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		600274D322B3CB4800BB56D3 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		600274D522B3CB4800BB56D3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		600274DB22B3CB8C00BB56D3 /* CustomView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CustomView.xib; sourceTree = "<group>"; };
+		600274DD22B3CBA000BB56D3 /* CustomUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomUIView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -55,11 +59,13 @@
 			isa = PBXGroup;
 			children = (
 				600274C922B3CB4800BB56D3 /* AppDelegate.swift */,
+				600274DB22B3CB8C00BB56D3 /* CustomView.xib */,
 				600274CB22B3CB4800BB56D3 /* ViewController.swift */,
 				600274CD22B3CB4800BB56D3 /* Main.storyboard */,
 				600274D022B3CB4800BB56D3 /* Assets.xcassets */,
 				600274D222B3CB4800BB56D3 /* LaunchScreen.storyboard */,
 				600274D522B3CB4800BB56D3 /* Info.plist */,
+				600274DD22B3CBA000BB56D3 /* CustomUIView.swift */,
 			);
 			path = CustomXibProject;
 			sourceTree = "<group>";
@@ -123,6 +129,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				600274D422B3CB4800BB56D3 /* LaunchScreen.storyboard in Resources */,
+				600274DC22B3CB8C00BB56D3 /* CustomView.xib in Resources */,
 				600274D122B3CB4800BB56D3 /* Assets.xcassets in Resources */,
 				600274CF22B3CB4800BB56D3 /* Main.storyboard in Resources */,
 			);
@@ -136,6 +143,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				600274CC22B3CB4800BB56D3 /* ViewController.swift in Sources */,
+				600274DE22B3CBA000BB56D3 /* CustomUIView.swift in Sources */,
 				600274CA22B3CB4800BB56D3 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

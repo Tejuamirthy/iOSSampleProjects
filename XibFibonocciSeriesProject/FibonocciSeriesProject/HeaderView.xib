@@ -10,15 +10,9 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
-        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="HeaderUIView" customModule="FibonocciSeriesProject" customModuleProvider="target">
-            <connections>
-                <outlet property="label" destination="Kb9-oe-szd" id="RIE-xn-xxA"/>
-                <outlet property="leftImageView" destination="lgp-kN-WnD" id="EQw-fg-l44"/>
-                <outlet property="rightImageView" destination="07K-Ul-sVO" id="dbA-4h-pZZ"/>
-            </connections>
-        </placeholder>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <view contentMode="scaleToFill" restorationIdentifier="headerView" id="iN0-l3-epB" userLabel="HeaderView" customClass="HeaderUIView" customModule="FibonocciSeriesProject" customModuleProvider="target">
+        <view contentMode="scaleToFill" id="iN0-l3-epB" userLabel="HeaderView" customClass="HeaderUIView" customModule="FibonocciSeriesProject" customModuleProvider="target">
             <rect key="frame" x="0.0" y="0.0" width="375" height="60"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
@@ -54,6 +48,9 @@
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
+            <connections>
+                <outlet property="label" destination="Kb9-oe-szd" id="Bw2-yh-tDF"/>
+            </connections>
             <point key="canvasLocation" x="193" y="84"/>
         </view>
     </objects>
