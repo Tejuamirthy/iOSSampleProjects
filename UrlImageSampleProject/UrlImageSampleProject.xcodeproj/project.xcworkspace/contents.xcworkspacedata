@@ -2,6 +2,6 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "self:FibonocciSeriesProject.xcodeproj">
+      location = "self:UrlImageSampleProject.xcodeproj">
    </FileRef>
 </Workspace>

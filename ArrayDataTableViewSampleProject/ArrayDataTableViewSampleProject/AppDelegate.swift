@@ -1,8 +1,8 @@
 //
 //  AppDelegate.swift
-//  FibonocciSeriesProject
+//  ArrayDataTableViewSampleProject
 //
-//  Created by Amirthy Tejeshwar on 14/06/19.
+//  Created by Amirthy Tejeshwar on 17/06/19.
 //  Copyright © 2019 coviam. All rights reserved.
 //
 
