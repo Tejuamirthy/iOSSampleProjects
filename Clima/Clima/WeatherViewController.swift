@@ -120,7 +120,7 @@ class WeatherViewController: UIViewController, CLLocationManagerDelegate, Change
         guard let lat = parameters["lat"],let lon = parameters["lon"] else { return }
         let finalUrlString =  "http://api.openweathermap.org/data/2.5/weather?lat=\(lat)&lon=\(lon)&appid=\(APP_ID)"
         
-        guard let finalUrl: URL = URL(string: finalUrlString) else{ return }
+        guard let finalUrl: URL = URL(string: finalUrlString) else { return }
         
         
         URLSession.shared.dataTask(with: finalUrl) {

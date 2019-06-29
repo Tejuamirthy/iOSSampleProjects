@@ -27,6 +27,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         return array
     }()
     
+    var dictionaryOfEditedRows = [Int:Int]()
     
     var listOfImages: [UIImage] = []
     let urlString = "https://timesofindia.indiatimes.com/thumb/msid-69820059,imgsize-152681,width-400,resizemode-4/69820059.jpg"
@@ -38,24 +39,69 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         tableView.delegate = self
         tableView.dataSource = self
         tableView.prefetchDataSource = self
+    
+        navigationItem.rightBarButtonItem = editButtonItem
+        //enable reordering the rows: Step -1
+        //tableView.isEditing = true
+        //navigationItem.rightBarButtonItem = editButtonItem
+        //enable swipe to delete: Step-1
+        tableView.allowsSelectionDuringEditing = true
         
         tableView.register(UINib(nibName: "TableViewCell", bundle: Bundle.main), forCellReuseIdentifier: tableCellIdentifier)
         tableView.register(UINib(nibName: "HeaderView", bundle: Bundle.main), forHeaderFooterViewReuseIdentifier: headerViewIdentifier)
         // Do any additional setup after loading the view, typically from a nib.
     }
     
+    override func setEditing(_ editing: Bool, animated: Bool) {
+        // Takes care of toggling the button's title.
+        super.setEditing(!isEditing, animated: true)
+        
+        // Toggle table view editing.
+        tableView.setEditing(!tableView.isEditing, animated: true)
+    }
+    
+    //enable reordering the rows: Step -2.1
+    func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
+        return .delete
+    }
+    //enable reordering the rows: Step -2.1
+    func tableView(_ tableView: UITableView, shouldIndentWhileEditingRowAt indexPath: IndexPath) -> Bool {
+        return false
+    }
+    //enable reordering the rows: Step-3
+    func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
+        let movedObject = self.listOfNumbers[getArrayIndexFromIndexPath(indexPath: sourceIndexPath)]
+//        listOfNumbers.remove(at: getArrayIndexFromIndexPath(indexPath: sourceIndexPath))
+//        dictionaryOfEditedRows[sourceIndexPath.section] = (dictionaryOfEditedRows[sourceIndexPath.section] ?? 5) - 1
+        
+        let deleteElementFlag = deleteFromArray(indexPath: sourceIndexPath)
+        //tableView.deleteRows(at: [indexPath], with: .fade)
+        listOfNumbers.insert(movedObject, at: getArrayIndexFromIndexPath(indexPath: destinationIndexPath))
+        dictionaryOfEditedRows[destinationIndexPath.section] = (dictionaryOfEditedRows[destinationIndexPath.section] ?? 5) + 1
+        if let flag = deleteElementFlag {
+            tableView.beginUpdates()
+            tableView.deleteSections(IndexSet(integer: flag)
+                , with: .fade)
+            //IndexSet(indexPath)
+            dictionaryOfEditedRows.removeValue(forKey: sourceIndexPath.section)
+            reduceKeyValueRows(section: sourceIndexPath.section)
+            tableView.endUpdates()
+        }
+        //tableView.reloadData()
+    }
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 5
+        return dictionaryOfEditedRows[section] ?? 5
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        var numberOfSections: Int
-        if listOfNumbers.count%5 != 0 {
-            numberOfSections = listOfNumbers.count/5 + 1
-        } else {
-            numberOfSections = listOfNumbers.count/5
+        var number = 0
+        var values = 0
+        for key in dictionaryOfEditedRows {
+            number = number + 1
+            values = values + key.value
         }
-        return numberOfSections
+        return number + (listOfNumbers.count - values)/5
     }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
@@ -82,14 +128,24 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return CGFloat(60)
     }
-    
+
+    //this method is called just before the cell is going to be displayed **** important point is that willDisplay is called after cellRowAt
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        let currentIndexOfList = indexPath.section*5 + indexPath.row
-        if listOfNumbers.count <= currentIndexOfList {
+        let indexNumberInArray: Int = getArrayIndexFromIndexPath(indexPath: indexPath)
+        if listOfNumbers.count <= indexNumberInArray {
             appendToList(indexPath: indexPath)
         } else {
-            (cell as? TableViewCell)?.label.text = "\(listOfNumbers[currentIndexOfList])"
+            (cell as? TableViewCell)?.label.text = "\(listOfNumbers[indexNumberInArray])"
         }
+    }
+    
+    func getArrayIndexFromIndexPath(indexPath: IndexPath) -> Int {
+        var indexNumberInArray = 0
+        for i in 0..<indexPath.section {
+            indexNumberInArray = indexNumberInArray + (dictionaryOfEditedRows[i] ?? 5)
+        }
+        indexNumberInArray = indexNumberInArray + indexPath.row
+        return indexNumberInArray
     }
     
     func tableView(_ tableView: UITableView, prefetchRowsAt indexPaths: [IndexPath]) {
@@ -110,8 +166,8 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         //to deselect the row so that it goes away after selecting the row
         tableView.deselectRow(at: indexPath, animated: true)
-        let alertController = UIAlertController(title: "Do you wish to continue", message: "Please select your answer to move forward", preferredStyle: .alert)
-        let alertActionOK = UIAlertAction(title: "Continue", style: .destructive) { (UIAlertAction) in
+        let alertController = UIAlertController(title: "Do you wish to continue", message: "Please select your answer to move forward", preferredStyle: .actionSheet)
+        let alertActionOK = UIAlertAction(title: "Continue", style: .default) { (UIAlertAction) in
             print("TODO implement how to delete this row")
         }
         let alertActionCancel = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
@@ -120,14 +176,62 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         present(alertController, animated: true, completion: nil)
     }
     
+    //enable swipe to delete: Step-2
+    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        return true
+    }
+    
+    //enable swipe to delete: Step-3
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == UITableViewCell.EditingStyle.delete {
+            tableView.beginUpdates()
+            
+            let deleteElementFlag = deleteFromArray(indexPath: indexPath)
+            tableView.deleteRows(at: [indexPath], with: .fade)
+            
+            if let flag = deleteElementFlag {
+                tableView.deleteSections(IndexSet(integer: flag)
+                    , with: .fade)
+                //IndexSet(indexPath)
+                dictionaryOfEditedRows.removeValue(forKey: indexPath.section)
+                reduceKeyValueRows(section: indexPath.section)
+            }
+            tableView.endUpdates()
+            print("Deleted the row on swipe")
+        }
+    }
+    
+    func deleteFromArray(indexPath: IndexPath) -> Int? {
+        var deleteElementOrNil: Int? = nil
+        let temp = dictionaryOfEditedRows[indexPath.section] ?? 5
+        dictionaryOfEditedRows[indexPath.section] = temp - 1
+        if dictionaryOfEditedRows[indexPath.section] == 0 {
+            deleteElementOrNil = indexPath.section
+        }
+        listOfNumbers.remove(at: getArrayIndexFromIndexPath(indexPath: indexPath))
+        return deleteElementOrNil
+    }
+    
+    func reduceKeyValueRows(section: Int) {
+        for entry in dictionaryOfEditedRows {
+            if section < entry.key {
+                dictionaryOfEditedRows.removeValue(forKey: entry.key)
+                dictionaryOfEditedRows[entry.key - 1] = entry.value
+            }
+        }
+    }
+//    
+//    func alertBox(title: String, message: String){
+//        let alertController = UIAlertController(title: title, message: message, preferredStyle: .)
+//    }
+    
     func appendToList(indexPath: IndexPath) {
-        if listOfNumbers.count - 10 <= indexPath.section*5 + indexPath.row {
+        if listOfNumbers.count - 10 <= getArrayIndexFromIndexPath(indexPath: indexPath){
             let nextInSeries = listOfNumbers[listOfNumbers.count-1] + listOfNumbers[listOfNumbers.count-2]
             listOfNumbers.append(nextInSeries)
             tableView.reloadData()
         }
     }
-
 }
 
 class TableViewCell: UITableViewCell {
